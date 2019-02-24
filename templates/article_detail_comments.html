@@ -1,0 +1,36 @@
+
+{% load staticfiles %}
+<head>
+
+</head>
+<body>
+{% block content %}
+    <div id="chat-body" class="panel panel-default">
+        <div class="panel-heading">Comments</div>
+        <div id="msg-list-div" class="panel-body">
+                <form id="chat-form" method="post" action="/comments/{{ instance.articleid }}/post/">
+                    <input id="chat-form2" type="hidden" value="/comments/{{ instance.articleid }}/messages/">
+                    {% csrf_token %}
+                    <div id="chat-bottom" class="input-group">
+                        {% if user.is_authenticated %}
+                        <input type="text" id="chat-msg" name="chat-msg" class="form-control" />
+                        {% else %}
+                        <input type="text" id="disabled-chat-msg" name="chat-msg" class="form-control"  readonly="true" value="Please login to comment!" />
+                        {% endif %}
+                        <span class="input-group-btn">
+                            <input class="btn btn-default" id="send" type="submit" value="Comment" {% if not user.is_authenticated %} disabled {% endif %}/>
+                        </span>
+                    </div>
+                </form>
+            <div id="isCommenting"></div>
+            <ul id="msg-list" class="list-group">
+                {% include "messages.html" %}
+            </ul>
+        </div>
+    </div>
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+{% endblock extra_js %}
+{% endblock content %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% for comment in comments reversed %}
+    {% if comment.user == request.user %}
+        <div id="userPost{{comment.id}}" class="userPost">
+            <small><p style="text-align: right"> You : </p></small>
+            <li class="text-right list-group-item">{{ comment.comment }}</li>
+            <p style="text-align:left;"><small><span>
+                <button class="btn btn-danger btn-sm" style="display:none" id="deletePost{{comment.id}}" name="deletePost">Delete</button></span>
+                <span style="float:right;"> &nbsp;about {{ comment.dateTime|timesince }} ago</span></small></p>
+        </div>
+    {% else %}
+        <small><p style="text-align: left"> {{ comment.user }} : </small></p>
+        <li class="text-left list-group-item">{{ comment.comment }}</li>
+        <small><p style="text-align:right;"> about {{ comment.dateTime|timesince }} ago</small></p>
+    {% endif %}
+{% empty %}
+    <li class="text-center list-group-item">Be the first to comment!</li>
+{% endfor %}

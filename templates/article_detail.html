@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block head_title %} {{instance.title}} | {{block.super}} {% endblock head_title %}</title>
+</head>
+<body>
+{% block content %}
+<div class="container-fluid">
+    {% if instance.image %}
+    <img src="{{ instance.image.url }}" class="img-responsive" style="display: block; width: 100%; margin: 0 auto;"/>
+    {% else %}
+    <img src="https://orig00.deviantart.net/5dbd/f/2016/285/7/8/pepe_the_frog___minimalist_by_anoanidude-dakrmth.jpg" class="img-responsive" style="display: block; width: 100%; margin: 0 auto;"/>
+    {% endif %}
+    <h1>{{ instance.title}} <small>by {{ instance.author }}</small></h1><hr>
+    {{ instance.content|linebreaks}} <br>
+    <small>posted on {{ instance.postTime }} <p class='rating'></p>
+      {% if user.is_authenticated %}
+
+      <button class='like-btn' data-href='{{ instance.get_like_url }}' data-likesCount='{{ instance.likes.count }}' data-dislikesCount='{{ instance.dislikes.count }}'>Likes {{ instance.likes.count }}</button>
+      <button class='dislike-btn' data-dislikehref='{{ instance.get_dislike_url }}' data-likesCount='{{ instance.likes.count }}' data-dislikesCount='{{ instance.dislikes.count }}'>Dislikes {{ instance.dislikes.count }}</button>
+
+      {% endif %}
+    </small> <hr>
+    <!-- change links to images -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
+    <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}">Twitter</a>
+    <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'>GooglePlus</a>
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+    <a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ share_string }}">Reddit</a>
+
+
+    {% include "article_detail_comments.html" %}
+</div>
+<script>
+    $(document).ready(function(){
+
+      $(".dislike-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var dislikeUrl = this_.attr("data-dislikehref")
+        if (dislikeUrl){
+           $.ajax({
+            url: dislikeUrl,
+            method: "POST",
+            data: {},
+            success: function(data){
+              var conditions = data
+              $(".dislike-btn").text('Dislike:' + conditions.dislikeNo)
+              $(".like-btn").text('Like:' + conditions.likeNo)
+            }, error: function(error){
+              console.log(error)
+              console.log("error")
+            }
+          })
+        }
+
+      });
+
+     $(".like-btn").click(function(e){
+       e.preventDefault()
+       var this_ = $(this)
+       var likeUrl = this_.attr("data-href")
+       if (likeUrl){
+          $.ajax({
+           url: likeUrl,
+           method: "POST",
+           data: {},
+           success: function(data){
+             var conditions = data
+            $(".dislike-btn").text('Dislike:' + conditions.dislikeNo)
+            $(".like-btn").text('Like:' + conditions.likeNo)
+           }, error: function(error){
+             console.log(error)
+             console.log("error")
+           }
+         })
+       }
+
+     });
+ });
+
+   </script>
+{% endblock content %}
+</body>
+
+</html>

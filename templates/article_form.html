@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block head_title %} EDITING | {{block.super}} {% endblock head_title %}</title>
+</head>
+<body>
+
+{% block content %}
+{% load staticfiles %}
+<div class="container-fluid">
+    <h1>Preview</h1>
+    <div class="content-preview">
+        <h3 id="preview-title"></h3>
+        <p id="preview-content"></p>
+    </div>
+</div>
+
+
+<h1>Form</h1>
+<form method="POST" action="" enctype="multipart/form-data" style="width:100%"> {% csrf_token %}
+{{ form.as_p }}
+<input type="submit" class="btn btn-default" {% if instance %} value="Save Post" {% else %} value="Create Post" {% endif %}/>
+    </form>
+
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/article_form.js' %}"></script>
+{% endblock extra_js %}
+{% endblock content %}
+</body>
+</html>

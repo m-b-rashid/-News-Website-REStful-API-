@@ -1,0 +1,73 @@
+{% load staticfiles %}
+<style>.navbar-brand {
+  padding: 0;
+}
+.navbar-nav .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 50px;
+  line-height: 50px;
+}</style>
+
+<nav class="navbar navbar-toggleable-md sticky-top navbar-light bg-faded justify-content-center">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+          <img src="http://pixelartmaker.com/art/a4ef4e595ab873a.png" width="47" height="30" class="d-inline-block align-top" alt="">
+          The Nightly Stormer</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto w-75 justify-content-center" >
+          <li class="nav-item active">
+            <a class="nav-link" href="/" id="ALL">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="TE">Tech</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="SC">Science</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="HE">Health</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="ED">Education</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="EN">Entertainment</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="SP">Sports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="BU">Business</a>
+          </li>
+        </ul>
+          <ul class="navbar-nav ml-auto" id="nav-right">
+          {% if not user.is_authenticated %}
+          <form class="form-inline my-2 my-lg-0" method="POST" action="/login/" enctype="multipart/form-data" id="login-form"> {% csrf_token %}
+                <div class="input-group">
+                  <span class="input-group-addon" id="email-login">@</span>
+                  <input type="text" class="form-control" placeholder="Email" aria-describedby="email-login" id="email-login-entry">
+                    <span class="input-group-addon" id="password-login">Pass</span>
+                  <input type="text" class="form-control" placeholder="********" aria-describedby="email-login" id="password-login-entry">
+                    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Login" id="btn-login"/>
+                </div>
+          </form>
+            <form class="form-inline my-2 my-lg-0" method="GET" action="/register/" id="register-form">
+                <button type="submit" class="btn btn-outline-default my-2 my-sm-0" id="btn-register">Register</button>
+            </form>
+          {% else %}
+            <span class="nav-text"><li>
+            Hi there, {{ user.name }}!
+                <form class="form-inline my-2 my-lg-0" method="GET" action="/profile/"><button type="submit" class="btn btn-outline-warning my-2 my-sm-0" id="btn-logout">Profile</button></form>
+                <form class="form-inline my-2 my-lg-0" method="GET" action="/logout/"><button type="submit" class="btn btn-outline-warning my-2 my-sm-0" id="btn-logout">Logout</button></form>
+            </li></span>
+          {% endif %}
+          </ul>
+      </div>
+</nav>
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+{% endblock extra_js %}

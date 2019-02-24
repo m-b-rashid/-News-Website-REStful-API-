@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{% load staticfiles %}
+<div class="container-fluid" id="article-panel">
+    <div class="PageID" id="Page1" type="hidden"></div>
+</div>
+<nav aria-label="Page navigation" id="paginator">
+      <ul class="pagination pager justify-content-center" style="align-content: center">
+          <li class="previous"><a href="#" id="PrevLink"><span aria-hidden="true">&larr;</span> Previous</a></li>
+          <b>&nbsp|&nbsp</b>
+          <li class="next"><a href="#" id="NextLink">Next <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+</nav>
+{% block extra_js %}
+{% endblock extra_js %}
+{% endblock content %}
